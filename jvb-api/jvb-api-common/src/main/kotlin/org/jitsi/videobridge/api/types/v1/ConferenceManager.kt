@@ -27,6 +27,10 @@ import org.jivesoftware.smack.packet.IQ
  * to allow a decoupling between the API and the JVB so that the API can
  * live as a separate artifact and avoid a circular dependency (since the
  * JVB will rely on this artifact).
+ * [ConferenceManager]是一个与方法相关的接口,目前在' videbridge '类在JVB的API将需要
+ * 处理传入消息时与之交互。这个接口的存在允许API与JVB解耦，使API可以作为一个独立的工件生活，
+ * 避免循环依赖(因为JVB将依赖于这个工件)。
+ *
  */
 interface ConferenceManager {
     fun handleColibriConferenceIQ(conferenceIQ: ColibriConferenceIQ): IQ
