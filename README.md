@@ -24,7 +24,7 @@ org.jitsi.impl.neomedia.transform.srtp.SRTPCryptoContext.checkReplay=false
 org.jitsi.videobridge.TCP_HARVESTER_PORT=4443
 EOF
 #执行 --secret prosody配置文件中的密码
-cd ~/ncse/jitsi-videobridge-2.1-SNAPSHOT/ && nohup ./jvb.sh --host=localhost --domain=jitsi.example.org --port=5347 --secret=IfGaish6 --apis=rest > ~/jvb.log
+cd ~/ncse/jitsi-videobridge-2.1-SNAPSHOT/ && nohup ./jvb.sh --host=localhost --domain=ncse.example.org --port=5347 --secret=IfGaish6 --apis=rest > ~/jvb.log
 ~~~
 
 
