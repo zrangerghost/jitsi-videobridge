@@ -1,28 +1,32 @@
-# Intro
+# 编译JVB
 
-Jitsi Videobridge is an XMPP server component that allows for multiuser video
-communication. Unlike the expensive dedicated hardware videobridges, Jitsi
-Videobridge does not mix the video channels into a composite video stream, but
-only relays the received video channels to all call participants. Therefore,
-while it does need to run on a server with good network bandwidth, CPU
-horsepower is not that critical for performance.
+~~~shell
+#JVB_HOME="The path to your JVB clone."
 
-You can find documentation in the doc/ directory in the source tree.
+mvn package -DskipTests -Dassembly.skipAssembly=false
 
-# Running it
+~~~
 
-You can download binary packages for Debian/Ubuntu:
-* [stable](https://download.jitsi.org/stable/) ([instructions](https://jitsi.org/downloads/ubuntu-debian-installations-instructions/))
-* [testing](https://download.jitsi.org/testing/) ([instructions](https://jitsi.org/downloads/ubuntu-debian-installations-instructions-for-testing/))
-* [nightly](https://download.jitsi.org/unstable/) ([instructions](https://jitsi.org/downloads/ubuntu-debian-installations-instructions-nightly/))
 
-Maven assembly binaries:
-* [assemblies](https://download.jitsi.org/jitsi-videobridge/)
 
-Or you can clone the Git repo and run the JVB from source using maven.
+# RUN JVB
 
-```sh
-JVB_HOME="The path to your JVB clone."
+~~~shell
+#解压
+unzip jitsi-videobridge-2.1-SNAPSHOT
 
-mvn compile exec:exec -Dexec.executable=java -Dexec.args="-cp %classpath org.jitsi.videobridge.MainKt -Djava.library.path=$JVB_HOME/lib/native/linux-64 -Djava.util.logging.config.file=$JVB_HOME/lib/logging.properties -Dnet.java.sip.communicator.SC_HOME_DIR_NAME=.jitsi-videobridge "
-```
+#创建配置文件
+mkdir -p ~/.sip-communicator
+cat > ~/.sip-communicator/sip-communicator.properties << EOF
+org.jitsi.impl.neomedia.transform.srtp.SRTPCryptoContext.checkReplay=false
+# The videobridge uses 443 by default with 4443 as a fallback, but since we're already
+# running nginx on 443 in this example doc, we specify 4443 manually to avoid a race condition
+org.jitsi.videobridge.TCP_HARVESTER_PORT=4443
+EOF
+#执行 --secret prosody配置文件中的密码
+cd ~/ncse/jitsi-videobridge-2.1-SNAPSHOT/ && nohup ./jvb.sh --host=localhost --domain=jitsi.example.org --port=5347 --secret=IfGaish6 --apis=rest > ~/jvb.log
+~~~
+
+
+
+# 
